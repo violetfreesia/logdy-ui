@@ -19,11 +19,15 @@ import { useContextMenuStore } from '../stores/contextMenu';
 <style scoped>
 .context-menu {
     position: absolute;
-    background: var(--hl-bg3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: 4px;
     min-width: 150px;
     z-index: 101;
     font-size: 12px;
-    font-family: 'Roboto mono', monospace;
+    font-family: var(--code-font);
 
     .disabled {
         opacity: 0.5;
@@ -33,11 +37,12 @@ import { useContextMenuStore } from '../stores/contextMenu';
 
 .context-menu div {
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
 }
 
 .context-menu div:hover {
-    background-color: var(--hl-bg2);
+    background-color: var(--surface-hover);
 }
 
 .overlay {

@@ -26,7 +26,12 @@ import Modal from "./Modal.vue"
     justify-content: center;
 
     button {
-        margin-left: 5px;
+        margin: 0 4px;
+    }
+
+    p {
+        max-width: 620px;
+        color: var(--font);
     }
 }
 </style>

@@ -603,57 +603,85 @@ const addMiddleware = () => {
 </template>
 
 <style scoped lang="scss">
-hr {
-    opacity: 0.1;
-}
-
 .drawer {
     position: fixed;
     right: 0;
     top: 0;
-    width: 900px;
-    height: calc(100vh - 22px);
-    background: var(--hl-bg);
+    width: min(940px, 96vw);
+    height: 100vh;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
     z-index: 999;
-    opacity: 0.97;
-    padding: 10px;
+    box-shadow: var(--shadow);
+    padding: 0;
 
-    h4 {
-        margin: 2px;
+    h2 {
+        margin: 16px 0 10px;
+        font-size: 18px;
     }
 
+    h4 {
+        margin: 12px 0 6px;
+    }
+
+    .inner-drawer {
+        height: 100%;
+        overflow-y: auto;
+        padding: 14px;
+
+        .header {
+            position: sticky;
+            top: -14px;
+            z-index: 4;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: -14px -14px 14px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+    }
 
     .settings {
-        select{
-            font-family: 'Roboto mono', sans-serif;
-            font-size: 12px;
-            padding:4px;
+        select,
+        .input {
+            width: 100%;
+            max-width: 420px;
+            font-family: var(--code-font);
         }
-        
+
         .save-error {
+            margin: 8px 0;
             padding: 10px;
+            border-radius: var(--radius-md);
         }
 
         .buttons {
-            margin-top: 10px;
-            background: rgba(0, 0, 0, .2);
-            padding: 10px;
-            text-align: right;
-
-            button {
-                font-size: 16px;
-                margin-right: 5px;
-            }
+            position: sticky;
+            bottom: 0;
+            z-index: 3;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 12px -14px 0;
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
 
             .success {
-                background-color: rgb(53, 182, 70);
+                background-color: var(--success-bg);
+                border-color: color-mix(in srgb, var(--success) 55%, transparent);
+                color: var(--success);
             }
         }
 
         .block {
-            border-bottom: 1px solid rgba(255, 255, 255, .1);
-            padding-bottom: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface-raised);
         }
     }
 
@@ -662,63 +690,74 @@ hr {
             margin-right: 5px;
         }
 
-    }
-
-    .input {
-        font-family: 'Roboto mono', sans-serif;
-        font-size: 12px;
-        padding: 5px;
-        width: 100%;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -o-box-sizing: border-box;
-        -ms-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-
-    .col-row {
-        display: flex;
-
-        .name {
-            width: 200px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
+        .row {
+            display: grid;
+            grid-template-columns: 160px minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
         }
     }
 
-    .inner-drawer {
-        margin-top: 10px;
-        height: calc(100% - 15px);
-        overflow-y: scroll;
+    .input {
+        width: 100%;
+        font-family: var(--code-font);
+    }
 
-        .header {
-            width: 100%;
-            text-align: right;
+    .col-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 220px) minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        margin-top: 8px;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface-raised);
+
+        .name {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: var(--code-font);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
         }
     }
 
     pre {
         margin: 6px 0;
-        background: var(--hl-bg2);
         padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface-sunken);
         white-space: pre-wrap;
     }
-
 }
 
 .btn-sm {
-    padding: 4px 6px;
-    margin-right: 4px;
-    border-radius: 4px;
-    font-size: 12px;
-
     &.active {
-        color: rgba(255, 255, 255, .3)
+        border-color: var(--accent);
+        color: var(--accent-strong);
     }
 
     &.grey {
-        color: rgba(255, 255, 255, .5)
+        color: var(--font-muted);
+    }
+}
+
+@media (max-width: 720px) {
+    .drawer {
+        .col-row,
+        .column-edit .row {
+            grid-template-columns: 1fr;
+        }
     }
 }
 </style>

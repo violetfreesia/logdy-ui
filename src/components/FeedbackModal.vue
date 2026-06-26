@@ -100,22 +100,30 @@ const submit = async () => {
 </script>
 
 <template>
-    <div style="margin-top: 10px">
+    <div class="form-panel feedback-panel">
 
         你可以填写下面的表单留下反馈或报告错误。
         消息会直接提交给 Logdy 团队。
         也可以考虑创建一个 <a href="https://github.com/logdyhq/logdy-core/issues/new" target="_blank">GitHub Issue</a>。
 
-        <br />
-        <br />
-
-        邮箱（可选）：<input type="text" class="input" name="email" v-model="email">
+        <label class="form-label">邮箱（可选）：</label>
+        <input type="text" class="input" name="email" v-model="email">
 
         <textarea v-model="content" placeholder="在这里填写反馈或错误描述" rows="5" class="input"
-            style="width:100%;max-height:200px; overflow: scroll; overflow-x: hidden; margin-bottom: 10px; margin-top: 10px;"></textarea>
+            ></textarea>
 
-        <button @click="submit" :disabled="loading || content.length === 0">提交</button>
+        <div class="button-row">
+            <button @click="submit" :disabled="loading || content.length === 0">提交</button>
+        </div>
 
         <div class="alert alert-success" v-if="success">消息已发送！</div>
     </div>
 </template>
+
+<style scoped lang="scss">
+.feedback-panel textarea {
+    width: 100%;
+    max-height: 220px;
+    overflow: auto;
+}
+</style>

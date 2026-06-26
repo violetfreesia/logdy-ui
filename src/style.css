@@ -1,128 +1,211 @@
 body {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --danger: #6c2727;
+
+  --font: #e5e7eb;
+  --font-muted: #9ca3af;
+  --font-subtle: #6b7280;
+  --bg: #0f1115;
+  --surface: #151922;
+  --surface-raised: #1b202b;
+  --surface-sunken: #0b0d12;
+  --surface-hover: #232936;
+  --surface-selected: #293241;
+  --border: #2d3443;
+  --border-strong: #465165;
+  --accent: #4f8cff;
+  --accent-strong: #6ea0ff;
+  --accent-soft: rgba(79, 140, 255, 0.16);
+  --danger: #ef6f6c;
+  --danger-bg: rgba(239, 111, 108, 0.16);
+  --success: #3fbf7f;
+  --success-bg: rgba(63, 191, 127, 0.16);
+  --warning: #d6a94a;
+  --info: #395a9a;
+  --input-bg: #0f131b;
+  --button-bg: #202737;
+  --button-hover: #2b3548;
+  --shadow: 0 16px 44px rgba(0, 0, 0, 0.32);
+  --code-font: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --topbar-height: 56px;
+  --banner-height: 38px;
+  --control-height: 30px;
+  --hl-bg: var(--surface-raised);
+  --hl-bg2: var(--surface-selected);
+  --hl-bg3: var(--surface-hover);
+  --hl-bg4: var(--border-strong);
+  --bg-btn: var(--button-bg);
+  --color: var(--font);
+
   color: var(--font);
   background-color: var(--bg);
 }
 
 body.dark {
-  color-scheme: light dark;
-  
-  --font: #efefef;
-  --bg: #242424;
-  --hl-bg: #373737;
-  --hl-bg2: #3f3f3f;
-  --hl-bg3: #595959;
-  --bg-btn: #1a1a1a;
-  --info: rgb(76, 94, 154);
+  color-scheme: dark;
 }
 
-body.light{
-  color: #213547;
-  --font: #303030;
-  --bg: #f8f8f8;
-  --hl-bg: #e0e0e0;
-  --hl-bg2: #9d9d9d;
-  --hl-bg3: #8c8c8c;
-  --bg-btn: #c5c5c5;
-  --danger: #ff8282;
-  --info: rgb(145, 155, 186);
+body.light {
+  color-scheme: light;
+  --font: #172033;
+  --font-muted: #5d6678;
+  --font-subtle: #7a8496;
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-raised: #f8fafc;
+  --surface-sunken: #edf1f7;
+  --surface-hover: #eef3fa;
+  --surface-selected: #e3eaf5;
+  --border: #d8dee9;
+  --border-strong: #b8c3d5;
+  --accent: #1f66d1;
+  --accent-strong: #164fa7;
+  --accent-soft: rgba(31, 102, 209, 0.12);
+  --danger: #c64242;
+  --danger-bg: rgba(198, 66, 66, 0.12);
+  --success: #21865b;
+  --success-bg: rgba(33, 134, 91, 0.12);
+  --warning: #9a6b12;
+  --info: #dbe7ff;
+  --input-bg: #ffffff;
+  --button-bg: #eef2f8;
+  --button-hover: #e2e8f3;
+  --shadow: 0 16px 44px rgba(28, 39, 61, 0.14);
 }
 
-@media (prefers-color-scheme: light) {
-  body.light {
-    color-scheme: light;
-    --font: #303030;
-    --bg: #f8f8f8;
-    --hl-bg: #e0e0e0;
-    --hl-bg2: #9d9d9d;
-    --hl-bg3: #8c8c8c;
-    --bg-btn: #c5c5c5;
-    --info: rgb(145, 155, 186);
-  }
-  
-  body.dark {
-    color-scheme: dark;
-    --font: #efefef;
-    --bg: #242424;
-    --hl-bg: #373737;
-    --hl-bg2: #3f3f3f;
-    --hl-bg3: #595959;
-    --bg-btn: #1a1a1a;
-    --info: rgb(76, 94, 154);
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+* {
+  box-sizing: border-box;
 }
 
-button[disabled]{
-  opacity: 0.7;
-}
-
-a, .link-style {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover, .link-style:hover {
-  color: #535bf2;
+html,
+body,
+#app {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
-  /* display: flex; */
-  /* align-items: start; */
   min-width: 320px;
   min-height: 100vh;
 }
 
-#app.noselect *{
-    -webkit-user-select: none;
-    /* Safari */
-    -ms-user-select: none;
-    /* IE 10 and IE 11 */
-    user-select: none;
-    /* Standard syntax */
+#app.noselect * {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+a,
+.link-style {
+  font-weight: 600;
+  color: var(--accent-strong);
+  text-decoration: none;
 }
 
-button, .btn {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+a:hover,
+.link-style:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  color: var(--font);
+}
+
+button,
+.btn {
+  min-height: var(--control-height);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
   font-family: inherit;
-  color: var(--color);
-  background-color: var(--bg-btn);
+  color: var(--font);
+  background-color: var(--button-bg);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, opacity 0.14s ease;
+}
 
+button:hover,
+.btn:hover {
+  background-color: var(--button-hover);
+  border-color: var(--border-strong);
 }
+
+button:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button[disabled],
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 .btn-danger {
-  background: var(--danger) !important;
+  background: var(--danger-bg) !important;
+  border-color: color-mix(in srgb, var(--danger) 54%, transparent) !important;
+  color: var(--danger) !important;
 }
-button:hover, .btn:hover {
-  border-color: #646cff;
+
+input,
+textarea,
+select,
+.input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--font);
+  font-family: inherit;
+  font-size: 12px;
+  min-height: var(--control-height);
+  padding: 6px 8px;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+textarea {
+  resize: vertical;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  min-height: auto;
+  accent-color: var(--accent);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+pre,
+code {
+  font-family: var(--code-font);
+}
+
+pre {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--font);
 }
 
 .card {

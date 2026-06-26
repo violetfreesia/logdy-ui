@@ -18,11 +18,11 @@ const store = useNotificationBarStore()
 <style lang="scss">
 .update {
     .top-bar {
-        padding-top: 50px !important;
+        margin-top: var(--banner-height);
     }
 
     .layout {
-        height: calc(100vh - 109px) !important;
+        height: calc(100vh - var(--topbar-height) - var(--banner-height)) !important;
     }
 }
 
@@ -32,23 +32,25 @@ const store = useNotificationBarStore()
     align-items: center;
     justify-content: center;
     top: 0;
+    z-index: 120;
+    gap: 8px;
 
     width: 100%;
 
-    height: 30px;
+    height: var(--banner-height);
     font-size: 13px;
-    background: #402c6b;
-    border-bottom: 1px solid #583c93;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
 
     span {
-        margin-right: 20px;
+        margin-right: 8px;
+        color: var(--font-muted);
     }
 
     button {
-        padding: 3px 8px;
-        font-size: 10px;
-        border-radius: 4px;
-        margin-right: 4px;
+        min-height: 26px;
+        font-size: 11px;
     }
 }
 </style>

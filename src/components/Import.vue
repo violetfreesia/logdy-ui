@@ -93,31 +93,34 @@ const importLayout = (data: string) => {
 
 </script>
 <template>
-    <div>
+    <div class="form-panel import-panel">
         你可以在这里导出和导入 UI 设置。仅导出布局（列、分面）和设置（中间件），不包含日志消息。
         <h2>导出</h2>
-        <button class="btn" @click="copy">复制到剪贴板</button>
-        <button class="btn" @click="download">下载</button>
-        <button class="btn" @click="save">保存到本地配置文件</button>
-        <br/>
+        <div class="button-row">
+            <button class="btn" @click="copy">复制到剪贴板</button>
+            <button class="btn" @click="download">下载</button>
+            <button class="btn" @click="save">保存到本地配置文件</button>
+        </div>
         <div class="alert alert-info" v-if="copied">已复制</div>
         <div class="alert alert-info" v-if="saved">已保存到：{{saved}}</div>
         <div class="alert alert-danger" v-if="savedError">保存到文件时出错</div>
         <hr />
         <h2>导入</h2>
-        <textarea rows="5"
-            style="width:100%;max-height:200px; overflow: scroll; overflow-x: hidden; margin-bottom: 10px; margin-top: 10px;"
-            placeholder="请在此粘贴 JSON" v-model="imported"></textarea>
+        <textarea rows="7" class="input import-json" placeholder="请在此粘贴 JSON" v-model="imported"></textarea>
 
-        <button class="btn" @click="importFromJson" :disabled="imported.length === 0">导入</button>
-        <button class="btn" @click="importFromFile">从文件导入</button>
-        <br />
+        <div class="button-row">
+            <button class="btn" @click="importFromJson" :disabled="imported.length === 0">导入</button>
+            <button class="btn" @click="importFromFile">从文件导入</button>
+        </div>
         <div class="">{{ importResult }}</div>
     </div>
 </template>
 
 <style scoped>
-button {
-    margin-right: 5px;
+.import-json {
+    width: 100%;
+    max-height: 240px;
+    overflow: auto;
+    font-family: var(--code-font);
 }
 </style>

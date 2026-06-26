@@ -22,7 +22,7 @@ defineEmits<{
     width: 100%;
     height: 100%;
     background: black;
-    opacity: 0.5;
+    opacity: 0.54;
     z-index: 9999;
 }
 
@@ -30,20 +30,28 @@ defineEmits<{
     position: fixed;
     display: flex;
     flex-direction: column;
-    top: 40px;
+    top: 42px;
     left: 50%;
     transform: translate(-50%, 0);
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
 
-    width: 900px;
+    width: min(900px, calc(100vw - 32px));
     max-height: calc(100% - 100px);
-    overflow-y: scroll;
-    background: var(--hl-bg);
+    overflow-y: auto;
+    background: var(--surface);
     z-index: 10000;
-    padding: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow);
 
     .close {
+        position: sticky;
+        top: -16px;
+        z-index: 1;
+        margin: -16px -16px 14px;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
         text-align: right;
     }
 }

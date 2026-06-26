@@ -84,20 +84,20 @@ const load = async () => {
 </script>
 
 <template>
-    <div>
+    <div class="form-panel load-logs">
         <h3>从缓冲区加载日志
             <Info v-tooltip="`所有日志消息都会由 Logdy 进程缓冲并保存在内存中，但 UI 中只能保留其中一部分
             （由“浏览器中存储的最大日志数”设置决定）。
             你可以在此页面选择一批消息，从缓冲区加载到 UI 中。`" />
         </h3>
         <p><strong>缓冲区状态</strong>：{{ store.statusStr }}</p>
-        <div>
+        <div class="load-offset">
             从偏移位置加载：
             <input type="number" class="input" v-model="offset" @change="updateSliders" />
             <Info v-tooltip="`最多可加载 ${store.layout.settings.maxMessages} 条消息（取决于当前设置）`" />
             <br />
 
-            <div class="slider-styled" id="slider-square" style="margin-top: 60px" v-if="showSlider"></div>
+            <div class="slider-styled" id="slider-square" v-if="showSlider"></div>
             <div v-else>
                 <p>
                     <strong>
@@ -106,38 +106,36 @@ const load = async () => {
                 </p>
             </div>
         </div>
-        <br />
-        <button class="btn" @click="load">加载消息</button>
+        <div class="button-row">
+            <button class="btn" @click="load">加载消息</button>
+        </div>
         <template v-if="lines.length > 0">
             <hr />
             <small>指定偏移位置的日志消息预览</small>
 
             <div v-for=" line, k  in  lines ">
-                <hr style="opacity: 0.3;" />
+                <hr />
                 消息 #{{ formatThousands(offsets[k] + 1) }}，接收时间：{{ moment(line.ts).format("DD/MM/YY HH:mm:ss")
                 }}
-                <pre v-if="!line.json_content">{{ line.content }}</pre>
-                <pre v-if="line.json_content">{{ line.json_content }}</pre>
+                <pre class="code-panel" v-if="!line.json_content">{{ line.content }}</pre>
+                <pre class="code-panel" v-if="line.json_content">{{ line.json_content }}</pre>
             </div>
         </template>
     </div>
 </template>
 
-<style>
+<style scoped>
 .v-popper__inner {
     max-width: 360px !important;
 }
 
 #slider-square {
     width: 90%;
-    margin: 0 auto;
+    margin: 58px auto 10px;
 }
 
-pre {
-    margin: 6px 0;
-    background: #1E1E1E;
-    padding: 10px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+.load-offset .input {
+    width: 120px;
+    margin: 0 6px;
 }
 </style>

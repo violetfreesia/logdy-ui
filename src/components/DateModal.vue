@@ -3,6 +3,12 @@ import moment, { DurationInputArg2 } from 'moment';
 import { onMounted, ref } from 'vue';
 import { useMainStore } from '../store';
 
+const props = withDefaults(defineProps<{
+    inline?: boolean
+}>(), {
+    inline: false
+})
+
 const emit = defineEmits<{
     (e: 'close'): void,
     (e: 'change', range: { from: number, to: number }): void
@@ -16,7 +22,9 @@ const changePeriod = (period?: Period) => {
             from: 0,
             to: 0
         })
-        emit("close")
+        if (!props.inline) {
+            emit("close")
+        }
     } else {
         let splitted = period.split("_")
         from.value = moment().subtract(parseInt(splitted[0]), splitted[1] as DurationInputArg2).format().slice(0, 19)
@@ -60,14 +68,14 @@ const submitDates = (close?: boolean) => {
 
 </script>
 <template>
-    <div class="modal">
+    <div :class="props.inline ? 'date-panel' : 'modal'">
         <div class="date-picker">
-            <span style="margin-bottom:5px">开始时间：</span>
+            <span class="form-label">开始时间：</span>
             <div>
                 <input type="datetime-local" step="1" class="date-from" v-model="from" />
-                <button class="btn-sm" @click="setToNow('from')" style="margin-left:4px; margin-right: 0;">现在</button>
+                <button class="btn-sm" @click="setToNow('from')">现在</button>
             </div>
-            <div>
+            <div class="quick-ranges">
                 <button class="btn-sm" @click="changePeriod('5_m')">过去 5 分钟</button>
                 <button class="btn-sm" @click="changePeriod('15_m')">过去 15 分钟</button>
                 <button class="btn-sm" @click="changePeriod('30_m')">过去 30 分钟</button>
@@ -76,20 +84,20 @@ const submitDates = (close?: boolean) => {
                 <button class="btn-sm" @click="changePeriod('1_d')">过去 1 天</button>
             </div>
             <hr style="width:100%" />
-            <span style="margin-bottom:5px">结束时间：</span>
+            <span class="form-label">结束时间：</span>
             <div>
                 <input type="datetime-local" step="1" v-model="to" />
-                <button class="btn-sm" @click="setToNow('to')" style="margin-left:4px; margin-right: 0;">现在</button>
+                <button class="btn-sm" @click="setToNow('to')">现在</button>
             </div>
             <hr style="width:100%" />
-            <div style="margin-top:7px">
+            <div class="button-row">
                 <button class="btn-sm" @click="submitDates()">提交</button>
                 <button class="btn-sm" @click="submitDates(true)">提交并关闭</button>
                 <button class="btn-sm" @click="changePeriod()">清除</button>
             </div>
         </div>
     </div>
-    <div class="overlay" @click="$emit('close')"></div>
+    <div v-if="!props.inline" class="overlay" @click="$emit('close')"></div>
 </template>
 
 <style lang="scss" scoped>
@@ -102,28 +110,41 @@ const submitDates = (close?: boolean) => {
     z-index: 9999;
 }
 
-.modal {
+.modal,
+.date-panel {
     position: absolute;
     display: flex;
     flex-direction: column;
-    transform: translate(-50%, 0);
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-
-    width: 250px;
-    max-height: calc(100% - 100px);
-    overflow-y: scroll;
-    background: var(--hl-bg);
-    z-index: 10000;
-    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow-y: auto;
+    background: var(--surface);
+    padding: 14px;
+    box-shadow: var(--shadow);
 
     .date-picker {
-
         display: flex;
         flex-direction: column;
+        gap: 8px;
+
+        > div {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
         .date-from {
-            margin-bottom: 10px;
+            margin-bottom: 0;
+        }
+
+        input {
+            min-width: 0;
+            flex: 1 1 190px;
+        }
+
+        .quick-ranges {
+            align-items: flex-start;
         }
 
         span.picker {
@@ -135,5 +156,18 @@ const submitDates = (close?: boolean) => {
             }
         }
     }
+}
+
+.modal {
+    transform: translate(-50%, 0);
+    width: 310px;
+    max-height: calc(100% - 100px);
+    z-index: 10000;
+}
+
+.date-panel {
+    position: static;
+    width: 100%;
+    box-shadow: none;
 }
 </style>

@@ -1,85 +1,107 @@
 .nofacets {
-    text-align: center;
-    box-sizing: border-box;
-    overflow: hidden;
-    padding: 30px 40px 0 40px;
-    font-size: 22px;
-    border-top: 1px solid var(--hl-bg);
+  margin-top: 10px;
+  padding: 18px 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  color: var(--font-muted);
+  text-align: center;
+  font-size: 14px;
+  background: var(--surface-raised);
 
-    span {
-        font-size: 14px;
-    }
+  span {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--font-subtle);
+  }
 }
 
 .facet {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  font-size: 12px;
+  line-height: 16px;
+  overflow: hidden;
 
-    border-top: 1px solid var(--hl-bg);
+  .facet-toggle-vis {
+    display: inline-block;
+    width: 10px;
+    color: var(--font-subtle);
+    font-size: 9px;
+  }
 
-    font-size: 13px;
-    line-height: 16px;
+  .facet-items {
+    max-height: 170px;
+    overflow-y: auto;
+    padding: 4px;
+    border-top: 1px solid var(--border);
+    transition: max-height 0.14s ease;
+
+    &:hover {
+      max-height: 240px;
+    }
+
+    .facet-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: var(--radius-sm);
+      padding: 5px 6px;
+      cursor: pointer;
+
+      &.facet-selected {
+        background: var(--accent-soft);
+        color: var(--font);
+        font-weight: 700;
+      }
+    }
+  }
+
+  .facet-label {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .facet-item:hover {
+    background-color: var(--surface-hover);
+  }
+
+  .facet-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 7px 8px;
+    color: var(--font-muted);
     cursor: pointer;
 
-    .facet-toggle-vis {
-        font-size: 9px;
+    .facet-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 800;
+      color: var(--font);
     }
 
-    .facet-items {
-        max-height: 150px;
-        overflow-y: scroll;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: 0s max-height;
-
-        &:hover {
-            max-height: 200px;
-            transition-delay:0.3s;
-        }
-
-        .facet-item {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            border-radius: 2px;
-            padding: 4px 4px;
-
-            &.facet-selected {
-                background: var(--hl-bg2);
-                font-weight: 600;
-            }
-        }
-
+    .facet-toggle {
+      color: var(--accent-strong);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
     }
+  }
 
-
-    .facet-label {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        width: 100%;
-    }
-
-    .facet-item:hover {
-        background-color: var(--hl-bg);
-    }
-
-    .facet-header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        .facet-title {
-            font-weight: 700;
-        }
-
-        .facet-toggle {}
-
-    }
-
-
-    .facet-val {
-        text-align: right;
-        width: 30px;
-    }
-
-    margin-top: 10px;
-
+  .facet-val {
+    min-width: 34px;
+    color: var(--font-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
 }

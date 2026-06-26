@@ -24,11 +24,11 @@ defineEmits<{
 <style lang="scss">
 .demo {
     .top-bar {
-        padding-top: 50px !important;
+        margin-top: var(--banner-height);
     }
 
     .layout {
-        height: calc(100vh - 109px) !important;
+        height: calc(100vh - var(--topbar-height) - var(--banner-height)) !important;
     }
 }
 
@@ -38,23 +38,24 @@ defineEmits<{
     align-items: center;
     justify-content: center;
     top: 0;
+    z-index: 120;
+    gap: 8px;
 
     width: 100%;
     font-weight: 600;
 
-    height: 40px;
-    background: #402c6b;
-    border-bottom: 1px solid #583c93;
+    height: var(--banner-height);
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
 
     span {
-        margin-right: 20px;
+        margin-right: 8px;
+        color: var(--font-muted);
     }
 
     button {
-        padding: 4px 8px;
         font-size: 12px;
-        border-radius: 7px;
-        margin-right: 4px;
     }
 }
 </style>

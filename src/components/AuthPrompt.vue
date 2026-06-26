@@ -34,39 +34,46 @@ const submit = async () => {
 
 </script>
 <template>
-    <div style="font-size:20px; margin-bottom: 10px">身份验证</div>
-    <div style="margin-bottom: 10px">访问 Logdy 需要输入密码。<a href="https://logdy.dev">什么是 Logdy？</a></div>
-    <div>
-        <input class="input" ref="input" v-model="pass" type="password" style="min-width: 400px;"
-            @keyup.enter="submit" />
-    </div>
-    <div v-if="loading">加载中...</div>
-    <div style="margin-top: 10px">
-        <input type="checkbox" v-model="remember" id="ch" /> <label for="ch">记住密码</label>
-    </div>
-    <div class="err" v-if="msg">
-        {{ msg }}
-    </div>
-    <div style="margin-top: 10px">
-        <button :disabled="pass?.length === 0" class="btn" @click="submit">提交</button>
+    <div class="auth-panel form-panel">
+        <div class="auth-title">身份验证</div>
+        <div class="auth-copy">访问 Logdy 需要输入密码。<a href="https://logdy.dev">什么是 Logdy？</a></div>
+        <div>
+            <input class="input password-input" ref="input" v-model="pass" type="password" @keyup.enter="submit" />
+        </div>
+        <div class="auth-loading" v-if="loading">加载中...</div>
+        <div class="form-row">
+            <input type="checkbox" v-model="remember" id="ch" /> <label for="ch">记住密码</label>
+        </div>
+        <div class="err" v-if="msg">
+            {{ msg }}
+        </div>
+        <div class="button-row">
+            <button :disabled="pass?.length === 0" class="btn" @click="submit">提交</button>
+        </div>
     </div>
 </template>
 
-<style lang="scss">
-.input {
-    font-family: 'Roboto mono', sans-serif;
-    font-size: 12px;
-    padding: 5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+<style scoped lang="scss">
+.auth-title {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.auth-copy,
+.auth-loading {
+    color: var(--font-muted);
+}
+
+.password-input {
+    width: min(420px, 100%);
+    font-family: var(--code-font);
 }
 
 .err {
     padding: 10px;
-    margin: 10px 0;
-    background: rgb(181, 60, 60);
+    border: 1px solid color-mix(in srgb, var(--danger) 55%, transparent);
+    border-radius: var(--radius-md);
+    background: var(--danger-bg);
+    color: var(--danger);
 }
 </style>

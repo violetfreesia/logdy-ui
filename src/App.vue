@@ -14,6 +14,7 @@ import UpdateBar from "./components/UpdateBar.vue"
 import Confirm from "./components/ConfirmModal.vue"
 import Import from "./components/Import.vue"
 import LoadLogs from "./components/LoadLogs.vue"
+import DateModal from "./components/DateModal.vue"
 import DoubleLeft from "./components/icon/DoubleLeft.vue"
 import DoubleRight from "./components/icon/DoubleRight.vue"
 import HideColumnIcon from "./components/HideColumnIcon.vue"
@@ -505,6 +506,10 @@ const updateSearchbar = () => {
   store.searchbar = searchbar.value
 }
 
+const updateDates = (range: { from: number, to: number }) => {
+  store.datepicker = { ...range }
+}
+
 globalEventBus.on('searchbar-update', (value: string) => {
   store.searchbar = value
   searchbar.value = value
@@ -640,39 +645,41 @@ const updateSampleLine = () => {
         </span>
       </div>
       <div class="end">
-        <TopBar />
+        <TopBar @stick-bottom="stickToBottom" />
       </div>
     </div>
     <div class="layout" @mouseup="endDragging">
-      <div style="position: relative">
+      <div class="left-shell">
         <div class="left-col" :style="{ width: store.layout.settings.leftColWidth + 'px' }"
           :class="{ empty: leftColHidden }">
-          <div style="position:absolute; right: 0; cursor: pointer;">
-            <DoubleLeft v-if="!leftColHidden" style="height: 25px; width: 25px;" @click="toggleLeftCol" />
-            <DoubleRight v-if="leftColHidden" style="height: 25px; width: 25px;" @click="toggleLeftCol" />
+          <div class="sidebar-toggle">
+            <DoubleLeft v-if="!leftColHidden" @click="toggleLeftCol" />
+            <DoubleRight v-if="leftColHidden" @click="toggleLeftCol" />
           </div>
           <template v-if="!leftColHidden">
+            <DateModal inline @change="updateDates" />
             <div class="counter">
-              <span>{{ store.displayRows.length }} / {{ store.rows.length }} 条日志</span>
-              <br />
-              <button class="btn-sm" style="margin-top:4px" @click="store.modalShow = 'export-logs'">导出消息</button>
-              <button class="btn-sm" style="margin-top:4px" @click="store.resetAllFiltersAndFacets()">重置全部筛选</button>
-              <div v-if="store.correlationFilter" class="alert alert-info"
-                style="margin-top: 10px; margin:10px; font-size: 13px">
+              <span class="counter-total">{{ store.displayRows.length }} / {{ store.rows.length }} 条日志</span>
+              <div class="counter-actions">
+                <button class="btn-sm" @click="store.modalShow = 'export-logs'">导出消息</button>
+                <button class="btn-sm" @click="store.resetAllFiltersAndFacets()">重置全部筛选</button>
+              </div>
+              <div v-if="store.correlationFilter" class="alert alert-info">
                 关联筛选已启用（{{ store.correlationFilter }}）
                 <br />
                 调整分辨率：
                 <button class="btn-sm" @click="changeTraceResolution(1)">-</button>
                 <button class="btn-sm" @click="changeTraceResolution(-1)">+</button>
                 <br />
-                <button class="btn-sm" style="margin-top:4px" @click="store.resetCorrelationFilter()">重置关联筛选</button>
+                <button class="btn-sm" @click="store.resetCorrelationFilter()">重置关联筛选</button>
               </div>
-              <br />
-              <span class="sort-label">分面排序 </span>
-              <button class="btn-sm" @click="store.facetSort = 'label'"
-                :disabled="store.facetSort === 'label'">标签</button>
-              <button class="btn-sm" @click="store.facetSort = 'count'"
-                :disabled="store.facetSort === 'count'">数量</button>
+              <div class="sort-controls">
+                <span class="sort-label">分面排序</span>
+                <button class="btn-sm" @click="store.facetSort = 'label'"
+                  :disabled="store.facetSort === 'label'">标签</button>
+                <button class="btn-sm" @click="store.facetSort = 'count'"
+                  :disabled="store.facetSort === 'count'">数量</button>
+              </div>
             </div>
             <Filter />
             <FacetComponent :facets="store.facets" :sort="store.facetSort" />
@@ -684,9 +691,9 @@ const updateSampleLine = () => {
         <div class="mid-col" :class="{ freeze: leftColHidden }" @mousedown="startDragging"></div>
       </div>
       <div class="right-col" ref="table">
-        <div v-if="columns.length === 0" style="text-align: center; padding-top:100px; font-size: 20px;">
+        <div v-if="columns.length === 0" class="empty-state">
 
-          <div v-if="useMainStore().status == 'not connected'" style="margin: 10px; padding: 5px;">状态：<strong>未连接</strong></div>
+          <div v-if="useMainStore().status == 'not connected'">状态：<strong>未连接</strong></div>
 
           <template v-else>
             尚未定义列，打开 <span class="clickable" @click="store.settingsDrawer = true">设置</span> 后添加列<br />
@@ -694,20 +701,14 @@ const updateSampleLine = () => {
           </template>
         </div>
         <template v-else>
-          <div class="btn stick" @click="stickToBottom" :class="{ sticked: store.stickedToBottom }">
-            <template v-if="!store.stickedToBottom">定位到底部</template>
-            <template v-else>已定位到底部</template>
-          </div>
           <table class="table" cellspacing="0" cellpadding="0">
             <tr>
               <th></th>
               <th v-for="col in columns" :style="{ width: col.width + 'px', cursor: 'auto' }" class="column-name"
                 @contextmenu.prevent="useContextMenuStore().show($event, { type: 'column_header', name: col.name })">
-                <span style="cursor: auto;">{{ col.name }}</span>
+                <span>{{ col.name }}</span>
                 <FilterIcon v-if="col.faceted" :style="{ opacity: store.isFacetActive(col.name) ? 1 : 0.2 }" />
-                <div class="hide-icon"
-                  style="height: 12px; width: 12px; display: inline; visibility: hidden; opacity: 0.4; cursor: pointer; margin-left: 3px;"
-                  @click="hideColumn(col)">
+                <div class="hide-icon" @click="hideColumn(col)">
                   <HideColumnIcon />
                 </div>
                 <div class="header-border" @mousedown="startColumnDragging(col.id)">
@@ -737,7 +738,7 @@ const updateSampleLine = () => {
                 </div>
 
               </td>
-              <td class="cell" v-if="store.correlationFilter" style="min-width: 50px;">
+              <td class="cell trace-cell" v-if="store.correlationFilter">
                 <div v-if="store.tracesRows[row.id] && store.tracesRows[row.id].id === row.id" class="trace-block"
                   v-tooltip="store.tracesRows[row.id].label || ''" :style="{
                     width: store.tracesRows[row.id].width / traceResolution + 'px',

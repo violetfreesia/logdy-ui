@@ -35,20 +35,20 @@ const copyToClipboard = (value: string | undefined) => {
         <div class="resize-handle" @mousedown="startDraggingDrawer"></div>
         <div class="inner-drawer">
             <div class="header">
-                <div style="margin-right: 10px;">
+                <div class="nav-hint">
                     <ArrowUp /> 下一条 /
                     <ArrowDown /> 上一条
                 </div>
 
                 <button @click="$emit('close')">关闭 <kbd>Esc</kbd></button>
             </div>
-            <div>
+            <div class="drawer-actions">
                 <button @click="useMainStore().filterCorrelated(row.msg)"
                     :disabled="!row.msg.correlation_id && !layout?.settings.correlationIdField">
                     显示关联日志
                 </button>
                 <button @click="useMainStore().resetCorrelationFilter()" v-if="useMainStore().correlationFilter"
-                    style="margin-left: 5px">
+                    class="btn-danger">
                     重置关联筛选
                 </button>
             </div>
@@ -60,8 +60,8 @@ const copyToClipboard = (value: string | undefined) => {
                         col.name }}
                     <Clipboard :class="'clipboard'" />
                 </h4>
-                <pre v-if="row.cells[k] && !row.cells[k].isJson">{{ row.cells[k].text || row.cells[k].error }}</pre>
-                <pre
+                <pre class="code-panel" v-if="row.cells[k] && !row.cells[k].isJson">{{ row.cells[k].text || row.cells[k].error }}</pre>
+                <pre class="code-panel"
                     v-else-if="row.cells[k].text"><VueJsonPretty :theme="'dark'" :data="JSON.parse(row.cells[k].text!)"></VueJsonPretty></pre>
 
             </div>
@@ -72,8 +72,8 @@ const copyToClipboard = (value: string | undefined) => {
                         col.name }}
                     <Clipboard :class="'clipboard'" />
                 </h4>
-                <pre v-if="!row.fields[k].isJson">{{ row.fields[k].text }}</pre>
-                <pre v-else><VueJsonPretty  :theme="'dark'" :data="row.fields[k].text"></VueJsonPretty></pre>
+                <pre class="code-panel" v-if="!row.fields[k].isJson">{{ row.fields[k].text }}</pre>
+                <pre class="code-panel" v-else><VueJsonPretty  :theme="'dark'" :data="row.fields[k].text"></VueJsonPretty></pre>
             </div>
             <hr />
             <button @click="showRaw = !showRaw">显示/隐藏原始消息</button>
@@ -84,14 +84,14 @@ const copyToClipboard = (value: string | undefined) => {
                         原始消息（JSON）
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><VueJsonPretty  :theme="'dark'" :data="row.msg.json_content"></VueJsonPretty></pre>
+                    <pre class="code-panel"><VueJsonPretty  :theme="'dark'" :data="row.msg.json_content"></VueJsonPretty></pre>
                 </div>
                 <div v-if="!row.msg.is_json" class="raw">
                     <h4 v-tooltip="'点击复制'" style="display: inline;" @click="copyToClipboard(row.msg.content)">
                         原始消息
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><code>{{ row.msg.content }}</code></pre>
+                    <pre class="code-panel"><code>{{ row.msg.content }}</code></pre>
                 </div>
                 <div v-if="row.msg.timing" class="raw">
                     <h4 v-tooltip="'点击复制'" style="display: inline;"
@@ -99,7 +99,7 @@ const copyToClipboard = (value: string | undefined) => {
                         耗时
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><VueJsonPretty  :theme="'dark'" :data="row.msg.timing"></VueJsonPretty></pre>
+                    <pre class="code-panel"><VueJsonPretty  :theme="'dark'" :data="row.msg.timing"></VueJsonPretty></pre>
                 </div>
                 <div v-if="row.msg.origin?.port" class="raw">
                     <h4 v-tooltip="'点击复制'" style="display: inline;"
@@ -107,7 +107,7 @@ const copyToClipboard = (value: string | undefined) => {
                         来源端口
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><code>{{ row.msg.origin?.port }}</code></pre>
+                    <pre class="code-panel"><code>{{ row.msg.origin?.port }}</code></pre>
                 </div>
                 <div v-if="row.msg.origin?.api_source" class="raw">
                     <h4 v-tooltip="'点击复制'" style="display: inline;"
@@ -115,7 +115,7 @@ const copyToClipboard = (value: string | undefined) => {
                         来源 API
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><code>{{ row.msg.origin?.api_source }}</code></pre>
+                    <pre class="code-panel"><code>{{ row.msg.origin?.api_source }}</code></pre>
                 </div>
                 <div v-if="row.msg.origin?.file" class="raw">
                     <h4 v-tooltip="'点击复制'" style="display: inline;"
@@ -123,7 +123,7 @@ const copyToClipboard = (value: string | undefined) => {
                         来源文件名
                         <Clipboard :class="'clipboard'" />
                     </h4>
-                    <pre><code>{{ row.msg.origin?.file }}</code></pre>
+                    <pre class="code-panel"><code>{{ row.msg.origin?.file }}</code></pre>
                 </div>
             </div>
             <div style="margin-bottom: 80px;">
@@ -136,29 +136,30 @@ const copyToClipboard = (value: string | undefined) => {
 
 <style scoped lang="scss">
 .drawer {
-    right: 0;
-    top: 0;
     height: 100%;
-    background: var(--hl-bg);
-    z-index: 999;
-    opacity: 0.99;
-    padding: 10px;
-    padding-left: 0px;
-    padding-top: 0;
+    max-width: min(900px, 48vw);
+    min-width: 360px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 90;
+    padding: 0;
 
     .resize-handle {
-        background: white;
-        width: 3px;
-        opacity: 0.2;
+        background: var(--border);
+        width: 4px;
         cursor: ew-resize;
         height: 100%;
         float: left;
-        margin-right: 10px;
+        margin-right: 0;
+
+        &:hover {
+            background: var(--accent);
+        }
     }
 
     h4,
     h3 {
-        margin: 2px;
+        margin: 12px 0 6px;
         cursor: pointer;
 
         .clipboard {
@@ -173,24 +174,39 @@ const copyToClipboard = (value: string | undefined) => {
     }
 
     .inner-drawer {
-        padding-top: 20px;
+        padding: 14px;
         height: 100%;
-        overflow-y: scroll;
-        padding-bottom: 20px;
+        overflow-y: auto;
+        padding-bottom: 72px;
 
 
         .header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            float: right;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            margin: -14px -14px 12px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+
+            .nav-hint {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--font-muted);
+                font-size: 12px;
+            }
         }
     }
 
-    pre {
-        margin: 6px 0;
-        background: var(--bg);
-        padding: 10px;
-        white-space: pre-wrap;
+    .drawer-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
     }
 
 }

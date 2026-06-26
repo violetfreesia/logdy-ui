@@ -6,12 +6,13 @@ import Play from './icon/Play.vue'
 import PlayNext from './icon/PlayNext.vue'
 import Load from './icon/Load.vue'
 import Bolt from './icon/Bolt.vue'
-import DateModal from '../components/DateModal.vue';
-import { ref } from 'vue';
 import Cog from './icon/Cog.vue';
 
 const store = useMainStore()
-const datepickerVisible = ref<boolean>()
+
+defineEmits<{
+    (e: 'stick-bottom'): void
+}>()
 
 const connectionStatusLabel = () => {
     return store.status === 'connected' ? '已连接' : '未连接'
@@ -21,15 +22,13 @@ const clearAll = () => {
     store.confirm("确定要清空全部日志吗？这只会清空浏览器中的日志，缓冲区日志不会受影响。", store.clearAllRows)
 }
 
-const updateDates = (range: { from: number, to: number }) => {
-    store.datepicker = { ...range }
-}
-
 </script>
 <template>
-    <div style="display:relative; margin-right: 3px;">
-        <button @click="datepickerVisible = true" v-html="store.datepickerLabel" style="font-size: 12px;"></button>
-        <DateModal v-if="datepickerVisible" @close="datepickerVisible = false" @change="updateDates" />
+    <div class="stick-control">
+        <button class="stick-button" @click="$emit('stick-bottom')" :class="{ sticked: store.stickedToBottom }">
+            <template v-if="!store.stickedToBottom">定位到底部</template>
+            <template v-else>已在底部</template>
+        </button>
     </div>
     <div class="ctrls">
         <button :disabled="store.receiveStatus.includes('following')"
@@ -55,7 +54,42 @@ const updateDates = (range: { from: number, to: number }) => {
             <Close width="19" height="19" />
         </button>
     </div>
-    <button @click="store.settingsDrawer = true" style="padding: 5px 8px">
+    <button class="settings-button" @click="store.settingsDrawer = true" v-tooltip="'设置'">
         <Cog />
     </button>
 </template>
+
+<style scoped lang="scss">
+.stick-control {
+    position: relative;
+    margin-right: 8px;
+}
+
+.stick-button,
+.settings-button {
+    height: 34px;
+    min-height: 34px;
+}
+
+.stick-button {
+    min-width: 94px;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+
+    &.sticked {
+        border-color: var(--accent);
+        color: var(--accent-strong);
+    }
+}
+
+.settings-button {
+    width: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
