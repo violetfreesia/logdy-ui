@@ -85,36 +85,36 @@ const load = async () => {
 
 <template>
     <div>
-        <h3>Load logs from buffer
-            <Info v-tooltip="`All log messages are buffered by Logdy process and kept in memory however only a fraction
-            can be kept in the UI (defined by 'Maximum number of log messages stored in the browser' setting).
-            In this screen, you can select a batch of messages that can be loaded from the buffer into the UI.`" />
+        <h3>从缓冲区加载日志
+            <Info v-tooltip="`所有日志消息都会由 Logdy 进程缓冲并保存在内存中，但 UI 中只能保留其中一部分
+            （由“浏览器中存储的最大日志数”设置决定）。
+            你可以在此页面选择一批消息，从缓冲区加载到 UI 中。`" />
         </h3>
-        <p><strong>Buffer status</strong>: {{ store.statusStr }}</p>
+        <p><strong>缓冲区状态</strong>：{{ store.statusStr }}</p>
         <div>
-            Load at offset:
+            从偏移位置加载：
             <input type="number" class="input" v-model="offset" @change="updateSliders" />
-            <Info v-tooltip="`Max # of messages to load is ${store.layout.settings.maxMessages} (based on settings)`" />
+            <Info v-tooltip="`最多可加载 ${store.layout.settings.maxMessages} 条消息（取决于当前设置）`" />
             <br />
 
             <div class="slider-styled" id="slider-square" style="margin-top: 60px" v-if="showSlider"></div>
             <div v-else>
                 <p>
                     <strong>
-                        There are {{ store.receiveCounters.MessageCount }} logs in the buffer that can be loaded entirely.
+                        缓冲区中共有 {{ store.receiveCounters.MessageCount }} 条日志，可以全部加载。
                     </strong>
                 </p>
             </div>
         </div>
         <br />
-        <button class="btn" @click="load">Load messages</button>
+        <button class="btn" @click="load">加载消息</button>
         <template v-if="lines.length > 0">
             <hr />
-            <small>Preview of the log messages at specified offsets</small>
+            <small>指定偏移位置的日志消息预览</small>
 
             <div v-for=" line, k  in  lines ">
                 <hr style="opacity: 0.3;" />
-                Message #{{ formatThousands(offsets[k] + 1) }}, received at: {{ moment(line.ts).format("DD/MM/YY HH:mm:ss")
+                消息 #{{ formatThousands(offsets[k] + 1) }}，接收时间：{{ moment(line.ts).format("DD/MM/YY HH:mm:ss")
                 }}
                 <pre v-if="!line.json_content">{{ line.content }}</pre>
                 <pre v-if="line.json_content">{{ line.json_content }}</pre>

@@ -20,9 +20,9 @@ const origins = computed(() => {
 })
 
 const formatOriginLabel = (l: string) => {
-    l = l.replace('origin_file_', 'File: ')
-    l = l.replace('origin_port_', 'Port: ')
-    l = l.replace('origin_na', 'N/A')
+    l = l.replace('origin_file_', '文件：')
+    l = l.replace('origin_port_', '端口：')
+    l = l.replace('origin_na', '无')
     return l
 }
 
@@ -31,28 +31,28 @@ const formatOriginLabel = (l: string) => {
     <div class="facet">
         <div class="facet-header">
             <span class="facet-title">
-                Filters</span>
+                筛选</span>
             <span class="toggle"></span>
         </div>
         <div class="facet-items">
             <div class="facet-item" :class="{ 'facet-selected': store.filterToggle['read'] }"
                 @click="store.toggleFilter('read')">
-                <div class="facet-label">Read</div>
+                <div class="facet-label">已读</div>
                 <div class="facet-val">{{ store.filters.read }}</div>
             </div>
             <div class="facet-item" :class="{ 'facet-selected': store.filterToggle['unread'] }"
                 @click="store.toggleFilter('unread')">
-                <div class="facet-label">Unread</div>
+                <div class="facet-label">未读</div>
                 <div class="facet-val">{{ store.filters.unread }}</div>
             </div>
             <div class="facet-item" :class="{ 'facet-selected': store.filterToggle['starred'] }"
                 @click="store.toggleFilter('starred')">
-                <div class="facet-label">Marked</div>
+                <div class="facet-label">已标记</div>
                 <div class="facet-val">{{ store.filters.starred }}</div>
             </div>
             <div class="facet-header">
                 <span class="facet-title">
-                    Origins</span>
+                    来源</span>
                 <span class="toggle"></span>
             </div>
             <div class="facet-item" :class="{ 'facet-selected': store.filterToggle[label] }"

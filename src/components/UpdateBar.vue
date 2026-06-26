@@ -7,12 +7,11 @@ const store = useNotificationBarStore()
 
 <template>
     <div class="update-bar" v-if="store.updateResponse">
-        <span>🎉 New Logdy v{{ store.updateResponse.current_version }} available! {{
+        <span>发现新版本 Logdy v{{ store.updateResponse.current_version }}！{{
             store.updateResponse.excerpt }} <a :href="store.updateResponse.blog_link"
-                v-if="store.updateResponse.blog_link" target="_blank">Read
-                more</a></span>
-        <button @click="store.hide">Hide</button>
-        <button @click="store.remindLater">Remind later</button>
+                v-if="store.updateResponse.blog_link" target="_blank">了解更多</a></span>
+        <button @click="store.hide">隐藏</button>
+        <button @click="store.remindLater">稍后提醒</button>
     </div>
 </template>
 

@@ -11,13 +11,13 @@ defineEmits<{
 
 <template>
     <div class="demo-bar">
-        <span>Demo mode</span>
-        <button @click="$emit('start')" :disabled="useMainStore().demoStatus === 'started'">Start</button>
-        <button @click="$emit('stop')" :disabled="useMainStore().demoStatus === 'stopped'">Stop</button>
-        <button @click="$emit('add')">Add 100 messages</button>
-        <button @click="$emit('mode', 'json')" :disabled="useMainStore().demoContent === 'json'">Produce JSON</button>
-        <button @click="$emit('mode', 'string')" :disabled="useMainStore().demoContent === 'string'">Produce
-            string</button>
+        <span>演示模式</span>
+        <button @click="$emit('start')" :disabled="useMainStore().demoStatus === 'started'">启动</button>
+        <button @click="$emit('stop')" :disabled="useMainStore().demoStatus === 'stopped'">停止</button>
+        <button @click="$emit('add')">新增 100 条消息</button>
+        <button @click="$emit('mode', 'json')" :disabled="useMainStore().demoContent === 'json'">生成 JSON</button>
+        <button @click="$emit('mode', 'string')" :disabled="useMainStore().demoContent === 'string'">生成
+            字符串</button>
     </div>
 </template>
 

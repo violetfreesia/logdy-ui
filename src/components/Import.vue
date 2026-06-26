@@ -94,24 +94,23 @@ const importLayout = (data: string) => {
 </script>
 <template>
     <div>
-        You can export and import UI setting in this view. Only layout (columns, facets) & settings (middlewares) are
-        exported (not log messages).
-        <h2>Export</h2>
-        <button class="btn" @click="copy">Copy to clipboard</button>
-        <button class="btn" @click="download">Download</button>
-        <button class="btn" @click="save">Save locally to config file</button>
+        你可以在这里导出和导入 UI 设置。仅导出布局（列、分面）和设置（中间件），不包含日志消息。
+        <h2>导出</h2>
+        <button class="btn" @click="copy">复制到剪贴板</button>
+        <button class="btn" @click="download">下载</button>
+        <button class="btn" @click="save">保存到本地配置文件</button>
         <br/>
-        <div class="alert alert-info" v-if="copied">Copied</div>
-        <div class="alert alert-info" v-if="saved">Saved to: {{saved}}</div>
-        <div class="alert alert-danger" v-if="savedError">Error while saving to a file</div>
+        <div class="alert alert-info" v-if="copied">已复制</div>
+        <div class="alert alert-info" v-if="saved">已保存到：{{saved}}</div>
+        <div class="alert alert-danger" v-if="savedError">保存到文件时出错</div>
         <hr />
-        <h2>Import</h2>
+        <h2>导入</h2>
         <textarea rows="5"
             style="width:100%;max-height:200px; overflow: scroll; overflow-x: hidden; margin-bottom: 10px; margin-top: 10px;"
-            placeholder="paste JSON here" v-model="imported"></textarea>
+            placeholder="请在此粘贴 JSON" v-model="imported"></textarea>
 
-        <button class="btn" @click="importFromJson" :disabled="imported.length === 0">Import</button>
-        <button class="btn" @click="importFromFile">Import from file</button>
+        <button class="btn" @click="importFromJson" :disabled="imported.length === 0">导入</button>
+        <button class="btn" @click="importFromFile">从文件导入</button>
         <br />
         <div class="">{{ importResult }}</div>
     </div>

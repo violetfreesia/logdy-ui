@@ -44,7 +44,7 @@ const formatNumber = (num: number): string => {
                 <span class="facet-toggle-vis" v-if="f.toggled">▼</span>
                 <span class="facet-toggle-vis" v-else>►</span>
                 {{ f.name }} ({{ Object.keys(f.items).length }})</span>
-            <span class="facet-toggle" @click="toggleAll(f)">All</span>
+            <span class="facet-toggle" @click="toggleAll(f)">全部</span>
         </div>
         <div v-if="f.toggled" class="facet-items">
             <div v-for="l in facetItemsSorted(f.items, props.sort).filter(f => f.selected)" class="facet-item"
@@ -60,8 +60,8 @@ const formatNumber = (num: number): string => {
         </div>
     </div>
     <div class="nofacets" v-if="facetsSorted.length === 0">
-        No facets defined<br />
-        <span>You can define facets per column in the settings</span>
+        尚未定义分面<br />
+        <span>可以在设置中为每一列定义分面</span>
     </div>
 </template>
 

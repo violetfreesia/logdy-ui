@@ -36,26 +36,26 @@ const copyToClipboard = (value: string | undefined) => {
         <div class="inner-drawer">
             <div class="header">
                 <div style="margin-right: 10px;">
-                    <ArrowUp /> Next /
-                    <ArrowDown /> Prev
+                    <ArrowUp /> 下一条 /
+                    <ArrowDown /> 上一条
                 </div>
 
-                <button @click="$emit('close')">Close <kbd>Esc</kbd></button>
+                <button @click="$emit('close')">关闭 <kbd>Esc</kbd></button>
             </div>
             <div>
                 <button @click="useMainStore().filterCorrelated(row.msg)"
                     :disabled="!row.msg.correlation_id && !layout?.settings.correlationIdField">
-                    Display correlated lines
+                    显示关联日志
                 </button>
                 <button @click="useMainStore().resetCorrelationFilter()" v-if="useMainStore().correlationFilter"
                     style="margin-left: 5px">
-                    Reset correlation filter
+                    重置关联筛选
                 </button>
             </div>
             <hr />
-            <h3>Table columns</h3>
+            <h3>表格列</h3>
             <div v-for="col, k in layout?.columns.filter(c => !c.hidden)">
-                <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                <h4 v-tooltip="'点击复制'" style="display: inline;"
                     @click="copyToClipboard(row.cells[k].text || row.cells[k].error)">{{
                         col.name }}
                     <Clipboard :class="'clipboard'" />
@@ -65,9 +65,9 @@ const copyToClipboard = (value: string | undefined) => {
                     v-else-if="row.cells[k].text"><VueJsonPretty :theme="'dark'" :data="JSON.parse(row.cells[k].text!)"></VueJsonPretty></pre>
 
             </div>
-            <h3>Non-table fields</h3>
+            <h3>非表格字段</h3>
             <div v-for="col, k in layout?.columns.filter(c => c.hidden)">
-                <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                <h4 v-tooltip="'点击复制'" style="display: inline;"
                     @click="copyToClipboard(row.fields[k].text || row.cells[k].error)">{{
                         col.name }}
                     <Clipboard :class="'clipboard'" />
@@ -76,51 +76,51 @@ const copyToClipboard = (value: string | undefined) => {
                 <pre v-else><VueJsonPretty  :theme="'dark'" :data="row.fields[k].text"></VueJsonPretty></pre>
             </div>
             <hr />
-            <button @click="showRaw = !showRaw">Show/hide raw message</button>
+            <button @click="showRaw = !showRaw">显示/隐藏原始消息</button>
             <div v-if="showRaw">
                 <div v-if="row.msg.is_json">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                    <h4 v-tooltip="'点击复制'" style="display: inline;"
                         @click="copyToClipboard(JSON.stringify(row.msg.json_content))">
-                        Raw message (JSON)
+                        原始消息（JSON）
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><VueJsonPretty  :theme="'dark'" :data="row.msg.json_content"></VueJsonPretty></pre>
                 </div>
                 <div v-if="!row.msg.is_json" class="raw">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;" @click="copyToClipboard(row.msg.content)">
-                        Raw message
+                    <h4 v-tooltip="'点击复制'" style="display: inline;" @click="copyToClipboard(row.msg.content)">
+                        原始消息
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><code>{{ row.msg.content }}</code></pre>
                 </div>
                 <div v-if="row.msg.timing" class="raw">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                    <h4 v-tooltip="'点击复制'" style="display: inline;"
                         @click="copyToClipboard(JSON.stringify(row.msg.timing))">
-                        Timing
+                        耗时
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><VueJsonPretty  :theme="'dark'" :data="row.msg.timing"></VueJsonPretty></pre>
                 </div>
                 <div v-if="row.msg.origin?.port" class="raw">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                    <h4 v-tooltip="'点击复制'" style="display: inline;"
                         @click="copyToClipboard(row.msg.origin?.port)">
-                        Origin port
+                        来源端口
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><code>{{ row.msg.origin?.port }}</code></pre>
                 </div>
                 <div v-if="row.msg.origin?.api_source" class="raw">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                    <h4 v-tooltip="'点击复制'" style="display: inline;"
                         @click="copyToClipboard(row.msg.origin?.api_source)">
-                        Origin API
+                        来源 API
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><code>{{ row.msg.origin?.api_source }}</code></pre>
                 </div>
                 <div v-if="row.msg.origin?.file" class="raw">
-                    <h4 v-tooltip="'Click to copy'" style="display: inline;"
+                    <h4 v-tooltip="'点击复制'" style="display: inline;"
                         @click="copyToClipboard(row.msg.origin?.file)">
-                        Origin filename
+                        来源文件名
                         <Clipboard :class="'clipboard'" />
                     </h4>
                     <pre><code>{{ row.msg.origin?.file }}</code></pre>

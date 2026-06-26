@@ -61,21 +61,21 @@ function downloadFile(file: File) {
 
 <template>
     <div>
-        <input type="checkbox" v-model="onlyVisible" /> <label>Export only visible (filtered)</label><br />
-        <small>If you uncheck this, all messages will be exported</small>
+        <input type="checkbox" v-model="onlyVisible" /> <label>仅导出当前可见内容（已过滤）</label><br />
+        <small>取消勾选后将导出全部消息</small>
     </div>
-    <p>Format</p>
+    <p>格式</p>
     <div>
         <input type="radio" v-model="format" value="json" /> <label>JSON</label><br />
         <input type="radio" v-model="format" value="csv" /> <label>CSV</label>
     </div>
-    <p>Contents</p>
+    <p>内容</p>
     <div>
-        <input type="radio" v-model="content" value="columns" /> <label>Only columns</label><br />
-        <input type="radio" v-model="content" value="full" /> <label>Full row</label>
+        <input type="radio" v-model="content" value="columns" /> <label>仅列</label><br />
+        <input type="radio" v-model="content" value="full" /> <label>完整行</label>
     </div>
     <br />
-    <button class="btn" @click="exportFile">Export</button>
+    <button class="btn" @click="exportFile">导出</button>
 </template>
 
 <style lang="scss"></style>

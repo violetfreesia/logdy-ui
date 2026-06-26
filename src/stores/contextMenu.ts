@@ -31,9 +31,9 @@ export const useContextMenuStore = defineStore("context_menu", () => {
                 const column = layout.getColumn(type.columnId)
                 if (column?.faceted && !type.error) {
                     let ff = useMainStore().facets[column.name].items.find(i => i.label == type.value)
-                    let label = "Filter by facet"
+                    let label = "按分面筛选"
                     if (ff?.selected) {
-                        label = "Unfilter by facet"
+                        label = "取消分面筛选"
                     }
                     actions.value?.push({
                         label,
@@ -47,7 +47,7 @@ export const useContextMenuStore = defineStore("context_menu", () => {
                 }
                 if (layout.settings.correlationIdField === column.name && type.value) {
                     actions.value?.push({
-                        label: "Display correlated lines",
+                        label: "显示关联日志",
                         fn: () => {
                             useMainStore().filterCorrelatedId(type.value!)
                             hide()
@@ -79,7 +79,7 @@ export const useContextMenuStore = defineStore("context_menu", () => {
                 //     }
                 // })
                 actions.value?.push({
-                    label: "Copy value",
+                    label: "复制值",
                     fn: () => {
                         let v = type.value || type.error
                         if (v) {
@@ -89,7 +89,7 @@ export const useContextMenuStore = defineStore("context_menu", () => {
                     }
                 })
                 actions.value?.push({
-                    label: "Copy column name",
+                    label: "复制列名",
                     fn: () => {
                         navigator.clipboard.writeText(column.name)
                         hide()
@@ -98,14 +98,14 @@ export const useContextMenuStore = defineStore("context_menu", () => {
                 break
             case "column_header":
                 actions.value?.push({
-                    label: "Copy column name",
+                    label: "复制列名",
                     fn: () => {
                         navigator.clipboard.writeText(type.name)
                         hide()
                     }
                 })
                 actions.value?.push({
-                    label: "Clear facet values",
+                    label: "清除此分面筛选",
                     fn: () => {
                         useMainStore().clearFacet(type.name)
                         hide()

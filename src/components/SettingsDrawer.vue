@@ -454,54 +454,54 @@ const addMiddleware = () => {
     <div class="drawer">
         <div class="inner-drawer">
             <div class="header">
-                <button class="btn" style="margin-right:3px;" @click="useMainStore().modalShow = 'import'">Export / import settings and columns</button>
+                <button class="btn" style="margin-right:3px;" @click="useMainStore().modalShow = 'import'">导出 / 导入设置与列</button>
                 <button class="btn" style="padding:0.6em; margin-right:3px;" @click="themeHandler.toggleTheme()">
                     <Sun v-if="themeHandler.theme.value === 'dark'" />
                     <Moon v-if="themeHandler.theme.value === 'light'" />
                 </button>
                 <button :disabled="settingsChanged" @click="$emit('close')"
-                    v-tooltip="settingsChanged ? 'Save or discard settings first' : null">Close</button>
+                    v-tooltip="settingsChanged ? '请先保存或放弃当前设置' : null">关闭</button>
             </div>
 
             <div class="settings" v-if="settings" :style="{display: selectedColumn ? 'none': 'block'}">
-                <h2>Settings
+                <h2>设置
                 </h2>
                 <div class="block">
-                    Order of entries
+                    日志顺序
                     <button class="btn-sm" :disabled="settings.entriesOrder === 'desc'"
-                        @click="settings.entriesOrder = 'desc'">Newest at the top</button>
+                        @click="settings.entriesOrder = 'desc'">最新在上方</button>
                     <button class="btn-sm" :disabled="settings.entriesOrder === 'asc'"
-                        @click="settings.entriesOrder = 'asc'">Newest at the bottom</button>
+                        @click="settings.entriesOrder = 'asc'">最新在下方</button>
                     </div>
                     <div class="block">
-                        Selected "correlation id" column
+                        选中的“correlation id”列
                         <select v-model="settings.correlationIdField">
                             <option :value="''"></option>
                             <option v-for="col in layout.columns" :id="'container_' + col.name">{{col.name}}</option>
                         </select>
                     </div>
                     <div class="block">
-                        Paint the same "correlation id" cells
+                        高亮相同“correlation id”的单元格
                         <button class="btn-sm" :disabled="settings.paintCorrelationIdCell"
-                            @click="settings.paintCorrelationIdCell = true">Enabled</button>
+                            @click="settings.paintCorrelationIdCell = true">启用</button>
                         <button class="btn-sm" :disabled="!settings.paintCorrelationIdCell"
-                            @click="settings.paintCorrelationIdCell = false">Disabled</button>
+                            @click="settings.paintCorrelationIdCell = false">禁用</button>
                 </div>
                 <div class="block">
-                    <div>Maximum number of log messages stored in the browser</div>
+                    <div>浏览器中存储的最大日志数</div>
                     <div>
                         <input class="input" v-model="settings.maxMessages" type="number" />
                     </div>
                 </div>
                 <div class="block" style="margin-top: 10px">
-                    <span>Middlewares <button class="btn-sm" @click="addMiddleware">Add</button></span>
+                    <span>中间件 <button class="btn-sm" @click="addMiddleware">新增</button></span>
                     <div v-for="m in settings.middlewares" style="margin:10px 0">
                         {{ m.name }}
-                        <button @click="editMiddleware(m.id)" class="btn-sm">Edit</button>
-                        <button @click="removeMiddleware(m.id)" class="btn-sm btn-danger">Remove</button>
+                        <button @click="editMiddleware(m.id)" class="btn-sm">编辑</button>
+                        <button @click="removeMiddleware(m.id)" class="btn-sm btn-danger">删除</button>
                     </div>
                     <div v-if="selectedMiddleware">
-                        <div>Name</div>
+                        <div>名称</div>
                         <div>
                             <input class="input" v-model="selectedMiddleware.name" type="text" />
                         </div>
@@ -509,30 +509,25 @@ const addMiddleware = () => {
                     <div style="margin:10px 0;" :style="{ 'display': !selectedMiddleware ? 'none' : 'block' }"
                         id="middleware-editor"></div>
                     <div v-if="selectedMiddleware">
-                        <div v-if="saveSettingsError" class="save-error error-bg" style="margin-bottom: 10px">Looks like
-                            there
-                            are errors in the code,
-                            please check
-                            the editor
-                            hints. {{saveSettingsError}}</div>
-                        <button @click="saveMiddleware" :disabled="!selectedMiddleware.name" class="btn-sm">Save middleware</button>
-                        <button @click="cancelMiddleware" class="btn-sm">Cancel</button>
+                        <div v-if="saveSettingsError" class="save-error error-bg" style="margin-bottom: 10px">代码中似乎有错误，请检查编辑器提示。 {{saveSettingsError}}</div>
+                        <button @click="saveMiddleware" :disabled="!selectedMiddleware.name" class="btn-sm">保存中间件</button>
+                        <button @click="cancelMiddleware" class="btn-sm">取消</button>
                     </div>
 
                 </div>
                 <div class="buttons">
                     <button :disabled="!settingsChanged" class="btn-sm" :class="{ success: settingsChanged }"
-                        @click="saveSettings">Save</button>
+                        @click="saveSettings">保存</button>
                     <button :disabled="!settingsChanged" class="btn-sm" :class="{ success: settingsChanged }"
-                        @click="saveSettingsAndClose">Save & close</button>
-                    <button :disabled="!settingsChanged" @click="cancelSettings" class="btn-sm">Cancel</button>
+                        @click="saveSettingsAndClose">保存并关闭</button>
+                    <button :disabled="!settingsChanged" @click="cancelSettings" class="btn-sm">取消</button>
                 </div>
                 <hr />
             </div>
             <div v-if="!selectedColumn" style="margin: 10px 0;">
-                <h2>Columns
-                    <button class="btn-sm" @click="add">Add</button>
-                    <button class="btn-sm" @click="autoGenerate">Auto-generate</button>
+                <h2>列
+                    <button class="btn-sm" @click="add">新增</button>
+                    <button class="btn-sm" @click="autoGenerate">自动生成</button>
                 </h2>
             </div>
             <div class="column-edit">
@@ -540,33 +535,32 @@ const addMiddleware = () => {
                     style="margin-top:10px" class="col-row">
                     <div class="name">{{ col.name }}</div>
                     <div class="controls">
-                        <button @click="edit(col.id)" class="btn-sm">Edit</button>
+                        <button @click="edit(col.id)" class="btn-sm">编辑</button>
                         <button @click="toggleView(col.id)" class="btn-sm"
-                            :class="{ active: !col.hidden }">Toggle</button>
+                            :class="{ active: !col.hidden }">切换显示</button>
                         <button @click="toggleColumnFaceted(col.id)" :class="{ 'active': col.faceted }"
-                            class="btn-sm">Faceted</button>
-                        <button @click="removeCol(col.id)" class="btn-sm btn-danger">Remove</button>
-                        <button :disabled="k === 0" @click="$emit('move', col.id, -1)" class="btn-sm">Move up</button>
+                            class="btn-sm">分面</button>
+                        <button @click="removeCol(col.id)" class="btn-sm btn-danger">删除</button>
+                        <button :disabled="k === 0" @click="$emit('move', col.id, -1)" class="btn-sm">上移</button>
                         <button :disabled="k === layout.columns.length - 1" @click="$emit('move', col.id, 1)"
-                            class="btn-sm">Move
-                            down</button>
+                            class="btn-sm">下移</button>
                     </div>
                 </div>
                 <div v-if="selectedColumn">
                     <div class="row">
-                        <div>Name</div>
+                        <div>名称</div>
                         <div>
                             <input class="input" v-model="selectedColumn.name" type="text" />
                         </div>
                     </div>
                     <div class="row">
-                        <div>Column hidden</div>
+                        <div>隐藏列</div>
                         <div>
                             <input v-model="selectedColumn.hidden" type="checkbox" />
                         </div>
                     </div>
                     <div class="row">
-                        <div>Column width</div>
+                        <div>列宽</div>
                         <div>
                             <input class="input" v-model="selectedColumn.width" type="number" />
                         </div>
@@ -575,37 +569,32 @@ const addMiddleware = () => {
 
                 <div style="margin:10px 0;" :style="{ 'display': !selectedColumn ? 'none' : 'block' }" id="editor">
                 </div>
-                <div v-if="saveColumnError" class="save-error error-bg" style="padding:10px">Looks like there are errors
-                    in the code, please
-                    check
-                    the editor
-                    hints.</div>
+                <div v-if="saveColumnError" class="save-error error-bg" style="padding:10px">代码中似乎有错误，请检查编辑器提示。</div>
                 <div style="margin-top:10px" v-if="selectedColumn">
-                    <button @click="save()">Save</button>
-                    <button @click="selectedColumn = undefined; saveColumnError = null">Cancel</button>
+                    <button @click="save()">保存</button>
+                    <button @click="selectedColumn = undefined; saveColumnError = null">取消</button>
                 </div>
             </div>
             <div class="sample-line">
                 <hr />
-                <h2>Sample line preview
-                    <button class="btn-sm" @click="sampleLineVisible = !sampleLineVisible">Toggle sample line</button>
-                    <button class="btn-sm" v-if="sampleLineVisible" @click="$emit('update-sample-line')">Change
-                        line</button>
+                <h2>示例行预览
+                    <button class="btn-sm" @click="sampleLineVisible = !sampleLineVisible">切换示例行</button>
+                    <button class="btn-sm" v-if="sampleLineVisible" @click="$emit('update-sample-line')">更换示例行</button>
 
                 </h2>
                 <div v-if="sampleLineVisible">
                     <div v-if="sampleLine">
-                        <h4>Field: content</h4>
+                        <h4>字段：content</h4>
                         <pre>{{ sampleLine?.content }}</pre>
-                        <h4>Field: is_json</h4>
+                        <h4>字段：is_json</h4>
                         <pre>{{ sampleLine?.is_json }}</pre>
-                        <h4>Field: json_content</h4>
+                        <h4>字段：json_content</h4>
                         <pre>
                             <VueJsonPretty :theme="'dark'" :data="sampleLine?.json_content"></VueJsonPretty>
                         </pre>
                     </div>
                     <div v-else>
-                        <pre>No sample line provided</pre>
+                        <pre>未提供示例行</pre>
                     </div>
                 </div>
             </div>

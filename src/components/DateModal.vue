@@ -62,30 +62,30 @@ const submitDates = (close?: boolean) => {
 <template>
     <div class="modal">
         <div class="date-picker">
-            <span style="margin-bottom:5px">Pick from:</span>
+            <span style="margin-bottom:5px">开始时间：</span>
             <div>
                 <input type="datetime-local" step="1" class="date-from" v-model="from" />
-                <button class="btn-sm" @click="setToNow('from')" style="margin-left:4px; margin-right: 0;">Now</button>
+                <button class="btn-sm" @click="setToNow('from')" style="margin-left:4px; margin-right: 0;">现在</button>
             </div>
             <div>
-                <button class="btn-sm" @click="changePeriod('5_m')">Past 5 minutes</button>
-                <button class="btn-sm" @click="changePeriod('15_m')">Past 15 minutes</button>
-                <button class="btn-sm" @click="changePeriod('30_m')">Past 30 minutes</button>
-                <button class="btn-sm" @click="changePeriod('1_h')">Past 1 hour</button>
-                <button class="btn-sm" @click="changePeriod('4_h')">Past 4 hours</button>
-                <button class="btn-sm" @click="changePeriod('1_d')">Past 1 day</button>
+                <button class="btn-sm" @click="changePeriod('5_m')">过去 5 分钟</button>
+                <button class="btn-sm" @click="changePeriod('15_m')">过去 15 分钟</button>
+                <button class="btn-sm" @click="changePeriod('30_m')">过去 30 分钟</button>
+                <button class="btn-sm" @click="changePeriod('1_h')">过去 1 小时</button>
+                <button class="btn-sm" @click="changePeriod('4_h')">过去 4 小时</button>
+                <button class="btn-sm" @click="changePeriod('1_d')">过去 1 天</button>
             </div>
             <hr style="width:100%" />
-            <span style="margin-bottom:5px">Pick to:</span>
+            <span style="margin-bottom:5px">结束时间：</span>
             <div>
                 <input type="datetime-local" step="1" v-model="to" />
-                <button class="btn-sm" @click="setToNow('to')" style="margin-left:4px; margin-right: 0;">Now</button>
+                <button class="btn-sm" @click="setToNow('to')" style="margin-left:4px; margin-right: 0;">现在</button>
             </div>
             <hr style="width:100%" />
             <div style="margin-top:7px">
-                <button class="btn-sm" @click="submitDates()">Submit</button>
-                <button class="btn-sm" @click="submitDates(true)">Submit and close</button>
-                <button class="btn-sm" @click="changePeriod()">Clear</button>
+                <button class="btn-sm" @click="submitDates()">提交</button>
+                <button class="btn-sm" @click="submitDates(true)">提交并关闭</button>
+                <button class="btn-sm" @click="changePeriod()">清除</button>
             </div>
         </div>
     </div>

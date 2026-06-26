@@ -12,13 +12,10 @@ import AuthPrompt from "./components/AuthPrompt.vue"
 import DemoBar from "./components/DemoBar.vue"
 import UpdateBar from "./components/UpdateBar.vue"
 import Confirm from "./components/ConfirmModal.vue"
-import FeedbackModal from "./components/FeedbackModal.vue"
 import Import from "./components/Import.vue"
 import LoadLogs from "./components/LoadLogs.vue"
 import DoubleLeft from "./components/icon/DoubleLeft.vue"
 import DoubleRight from "./components/icon/DoubleRight.vue"
-import Flag from "./components/icon/Flag.vue"
-import ArrowRightUp from "./components/icon/ArrowRightUp.vue"
 import HideColumnIcon from "./components/HideColumnIcon.vue"
 import FilterIcon from "./components/icon/Filter.vue"
 import ExportLogs from "./components/ExportLogs.vue"
@@ -525,7 +522,7 @@ watch(() => store.initSettings?.received, (newVal?: boolean) => {
 })
 
 const hideColumn = (col: Column) => {
-  useMainStore().confirm("Are you sure you want to hide the column? You can always restore it in the settings", () => {
+  useMainStore().confirm("确定要隐藏这一列吗？之后可以在设置中恢复。", () => {
     col.hidden = true
     columnEdited(col)
   })
@@ -612,7 +609,6 @@ const updateSampleLine = () => {
     <ExportLogs v-if="store.modalShow == 'export-logs'" :rows="store.rows" :visible-rows="store.displayRows"
       :layout="(store.layout as Layout)" />
     <LoadLogs v-if="store.modalShow == 'load-logs'" />
-    <FeedbackModal v-if="store.modalShow == 'feedback'" />
   </Modal>
   <ContextMenu v-if="useContextMenuStore().display" />
   <Confirm />
@@ -625,22 +621,10 @@ const updateSampleLine = () => {
     @mode="changeDemoMode" @add="addDemoData(100)" />
   <div :class="{ 'demo': store.demoMode, 'update': useNotificationBarStore().display }">
     <div class="top-bar">
-      <div class="left">
-        <div class="logo">
-          <a href="https://logdy.dev" target="_blank"><img src="/logdy-transparent.png" /></a>
-        </div>
-        <div class="docs link-style">
-          <a href="https://logdy.dev/docs/quick-start" target="_blank">Docs
-          </a>
-          <ArrowRightUp style=""></ArrowRightUp>
-        </div>
-        <div class="docs link-style" @click="store.modalShow = 'feedback'" style="cursor:pointer">
-          Leave feedback <Flag></Flag>
-        </div>
-      </div>
+      <div class="left"></div>
       <div class="right">
         <input type="text" class="searchbar" id="searchbar-query" v-model="searchbar" @keyup.enter="updateSearchbar"
-          placeholder="Type query, then hit 'Enter' (powered by breser.dev)" />
+          placeholder="输入查询后按 Enter（由 breser.dev 支持）" />
         <!-- <button class="btn clear" @click="updateSearchbar" style="display: flex;align-items: center;">
           Search
           <CornerRightDown
@@ -649,10 +633,10 @@ const updateSampleLine = () => {
         <button class="btn clear" @click="clearSearchbar">
           <Close />
         </button>
-        <span class="search-error" v-if="store.searchbarValid.length > 0">Invalid search query: {{ store.searchbarValid
-        }}.
+        <span class="search-error" v-if="store.searchbarValid.length > 0">查询语法无效：{{ store.searchbarValid
+        }}。
           <br />
-          <a href="https://logdy.dev/docs" target="_blank">Visit docs</a>
+          <a href="https://logdy.dev/docs" target="_blank">查看文档</a>
         </span>
       </div>
       <div class="end">
@@ -669,29 +653,26 @@ const updateSampleLine = () => {
           </div>
           <template v-if="!leftColHidden">
             <div class="counter">
-              <span>{{ store.displayRows.length }} out of {{ store.rows.length }} logs</span>
+              <span>{{ store.displayRows.length }} / {{ store.rows.length }} 条日志</span>
               <br />
-              <button class="btn-sm" style="margin-top:4px" @click="store.modalShow = 'export-logs'">Export
-                messages</button>
-              <button class="btn-sm" style="margin-top:4px" @click="store.resetAllFiltersAndFacets()">Reset all
-                filters</button>
+              <button class="btn-sm" style="margin-top:4px" @click="store.modalShow = 'export-logs'">导出消息</button>
+              <button class="btn-sm" style="margin-top:4px" @click="store.resetAllFiltersAndFacets()">重置全部筛选</button>
               <div v-if="store.correlationFilter" class="alert alert-info"
                 style="margin-top: 10px; margin:10px; font-size: 13px">
-                Correlation filter active ({{ store.correlationFilter }})
+                关联筛选已启用（{{ store.correlationFilter }}）
                 <br />
-                Change resolution:
+                调整分辨率：
                 <button class="btn-sm" @click="changeTraceResolution(1)">-</button>
                 <button class="btn-sm" @click="changeTraceResolution(-1)">+</button>
                 <br />
-                <button class="btn-sm" style="margin-top:4px" @click="store.resetCorrelationFilter()">Reset correlation
-                  filter</button>
+                <button class="btn-sm" style="margin-top:4px" @click="store.resetCorrelationFilter()">重置关联筛选</button>
               </div>
               <br />
-              <span class="sort-label">Sort facets </span>
+              <span class="sort-label">分面排序 </span>
               <button class="btn-sm" @click="store.facetSort = 'label'"
-                :disabled="store.facetSort === 'label'">Label</button>
+                :disabled="store.facetSort === 'label'">标签</button>
               <button class="btn-sm" @click="store.facetSort = 'count'"
-                :disabled="store.facetSort === 'count'">Count</button>
+                :disabled="store.facetSort === 'count'">数量</button>
             </div>
             <Filter />
             <FacetComponent :facets="store.facets" :sort="store.facetSort" />
@@ -705,20 +686,17 @@ const updateSampleLine = () => {
       <div class="right-col" ref="table">
         <div v-if="columns.length === 0" style="text-align: center; padding-top:100px; font-size: 20px;">
 
-          <div v-if="useMainStore().status == 'not connected'" style="margin: 10px; padding: 5px;">Status: <strong>Not
-              connected</strong></div>
+          <div v-if="useMainStore().status == 'not connected'" style="margin: 10px; padding: 5px;">状态：<strong>未连接</strong></div>
 
           <template v-else>
-            No columns defined, open <span class="clickable" @click="store.settingsDrawer = true">Settings</span> and
-            add
-            columns<br />
-            or <span class="clickable" @click="addRawColumn">add column with raw content now</span>.
+            尚未定义列，打开 <span class="clickable" @click="store.settingsDrawer = true">设置</span> 后添加列<br />
+            或者 <span class="clickable" @click="addRawColumn">立即添加包含原始内容的列</span>。
           </template>
         </div>
         <template v-else>
           <div class="btn stick" @click="stickToBottom" :class="{ sticked: store.stickedToBottom }">
-            <template v-if="!store.stickedToBottom">Stick to bottom</template>
-            <template v-else>Sticked</template>
+            <template v-if="!store.stickedToBottom">定位到底部</template>
+            <template v-else>已定位到底部</template>
           </div>
           <table class="table" cellspacing="0" cellpadding="0">
             <tr>
@@ -735,7 +713,7 @@ const updateSampleLine = () => {
                 <div class="header-border" @mousedown="startColumnDragging(col.id)">
                   &nbsp;</div>
               </th>
-              <th v-if="store.correlationFilter">Trace
+              <th v-if="store.correlationFilter">链路
               </th>
             </tr>
             <tr class="row" :class="{ opened: row.opened, open: row.open }" v-for="row in store.displayRows"

@@ -6,11 +6,11 @@ import Modal from "./Modal.vue"
 <template>
     <Modal v-if="useMainStore().confirmShow === true" @close="useMainStore().confirmProcess(false)">
         <div class="container">
-            <p>{{ useMainStore().confirmMsg || `Are you sure you want to proceed?` }}</p>
+            <p>{{ useMainStore().confirmMsg || `确定要继续吗？` }}</p>
 
             <div>
-                <button @click="useMainStore().confirmProcess(true)">Confirm</button>
-                <button @click="useMainStore().confirmProcess(false)">Cancel</button>
+                <button @click="useMainStore().confirmProcess(true)">确认</button>
+                <button @click="useMainStore().confirmProcess(false)">取消</button>
             </div>
         </div>
     </Modal>

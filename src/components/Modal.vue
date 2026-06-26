@@ -7,7 +7,7 @@ defineEmits<{
 <template>
     <div class="modal">
         <div class="close">
-            <button @click="$emit('close')">Close</button>
+            <button @click="$emit('close')">关闭</button>
         </div>
         <slot></slot>
     </div>

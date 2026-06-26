@@ -121,7 +121,7 @@ export const useMainStore = defineStore("main", () => {
 
     const datepickerLabel = computed(() => {
         if (datepicker.value.from <= 0 && datepicker.value.to <= 0) {
-            return 'Set timeframe'
+            return '设置时间范围'
         }
 
         let from = moment(datepicker.value.from * 1000)
@@ -135,7 +135,7 @@ export const useMainStore = defineStore("main", () => {
             until = to.format('HH:mmA')
         }
         if (datepicker.value.to === 0) {
-            until = 'now'
+            until = '现在'
         }
 
         return `${start} - ${until}`
@@ -196,7 +196,7 @@ export const useMainStore = defineStore("main", () => {
         }
 
         if (!anotherTab.value) {
-            confirm("We have detected Logdy opened in another tab. Currently we do not support multiple tabs", () => {
+            confirm("检测到 Logdy 已在另一个标签页中打开，当前不支持同时使用多个标签页", () => {
                 anotherTab.value = false
             })
         }
@@ -205,11 +205,11 @@ export const useMainStore = defineStore("main", () => {
 
     const statusStr = computed(() => {
         if (receiveStatus.value === 'paused') {
-            return `Paused at entry #${formatThousands(receiveCounters.value.LastDeliveredIdx + 1)} out of ${formatThousands(receiveCounters.value.MessageCount)
-                } (${formatThousands(receiveCounters.value.MessageCount - receiveCounters.value.LastDeliveredIdx - 1)} not seen)`
+            return `已暂停在第 #${formatThousands(receiveCounters.value.LastDeliveredIdx + 1)} 条，共 ${formatThousands(receiveCounters.value.MessageCount)
+                } 条（${formatThousands(receiveCounters.value.MessageCount - receiveCounters.value.LastDeliveredIdx - 1)} 条未查看）`
         }
         if (receiveStatus.value.includes('following')) {
-            return `Following real-time out of ${formatThousands(receiveCounters?.value.MessageCount)} entries`
+            return `实时跟随中，共 ${formatThousands(receiveCounters?.value.MessageCount)} 条`
         }
         return '-'
     })

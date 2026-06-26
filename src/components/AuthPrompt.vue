@@ -29,27 +29,26 @@ const submit = async () => {
         return
     }
 
-    msg.value = "Password failed, please try again"
+    msg.value = "密码错误，请重试"
 }
 
 </script>
 <template>
-    <div style="font-size:20px; margin-bottom: 10px">Authentication</div>
-    <div style="margin-bottom: 10px">To access Logdy you need to provide a password. <a href="https://logdy.dev">What is
-            Logdy?</a></div>
+    <div style="font-size:20px; margin-bottom: 10px">身份验证</div>
+    <div style="margin-bottom: 10px">访问 Logdy 需要输入密码。<a href="https://logdy.dev">什么是 Logdy？</a></div>
     <div>
         <input class="input" ref="input" v-model="pass" type="password" style="min-width: 400px;"
             @keyup.enter="submit" />
     </div>
-    <div v-if="loading">loading...</div>
+    <div v-if="loading">加载中...</div>
     <div style="margin-top: 10px">
-        <input type="checkbox" v-model="remember" id="ch" /> <label for="ch">Remember password</label>
+        <input type="checkbox" v-model="remember" id="ch" /> <label for="ch">记住密码</label>
     </div>
     <div class="err" v-if="msg">
         {{ msg }}
     </div>
     <div style="margin-top: 10px">
-        <button :disabled="pass?.length === 0" class="btn" @click="submit">Submit</button>
+        <button :disabled="pass?.length === 0" class="btn" @click="submit">提交</button>
     </div>
 </template>
 
