@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import moment, { DurationInputArg2 } from 'moment';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useMainStore } from '../store';
 
 const props = withDefaults(defineProps<{
@@ -16,12 +16,40 @@ const emit = defineEmits<{
 
 type Period = "5_m" | "15_m" | "30_m" | "1_h" | "4_h" | "1_d"
 
+const store = useMainStore()
+const from = ref<string | undefined>()
+const to = ref<string | undefined>()
+
+const timestampToInputValue = (timestamp: number) => {
+    return timestamp > 0 ? moment(timestamp * 1000).format().slice(0, 19) : undefined
+}
+
+const inputValueToTimestamp = (value?: string) => {
+    if (!value) {
+        return 0
+    }
+
+    const parsed = moment(value)
+    return parsed.isValid() ? parsed.unix() : 0
+}
+
+const syncFromStore = () => {
+    from.value = timestampToInputValue(store.datepicker.from)
+    to.value = timestampToInputValue(store.datepicker.to)
+}
+
+const emitChange = () => {
+    emit("change", {
+        from: inputValueToTimestamp(from.value),
+        to: inputValueToTimestamp(to.value)
+    })
+}
+
 const changePeriod = (period?: Period) => {
     if (!period) {
-        emit("change", {
-            from: 0,
-            to: 0
-        })
+        from.value = undefined
+        to.value = undefined
+        emitChange()
         if (!props.inline) {
             emit("close")
         }
@@ -31,18 +59,8 @@ const changePeriod = (period?: Period) => {
     }
 }
 
-const from = ref<string | undefined>()
-const to = ref<string | undefined>()
-
 onMounted(() => {
-    const store = useMainStore()
-
-    if (store.datepicker.from) {
-        from.value = moment(store.datepicker.from * 1000).format().slice(0, 19)
-    }
-    if (store.datepicker.to) {
-        to.value = moment(store.datepicker.to * 1000).format().slice(0, 19)
-    }
+    syncFromStore()
 })
 
 const setToNow = (r: "from" | "to") => {
@@ -56,15 +74,8 @@ const setToNow = (r: "from" | "to") => {
     }
 }
 
-const submitDates = (close?: boolean) => {
-    emit("change", {
-        from: moment(from.value).unix(),
-        to: to.value ? moment(to.value).unix() : 0
-    })
-    if (close) {
-        emit("close")
-    }
-}
+watch(() => [store.datepicker.from, store.datepicker.to], syncFromStore)
+watch([from, to], emitChange)
 
 </script>
 <template>
@@ -88,12 +99,6 @@ const submitDates = (close?: boolean) => {
             <div>
                 <input type="datetime-local" step="1" v-model="to" />
                 <button class="btn-sm" @click="setToNow('to')">现在</button>
-            </div>
-            <hr style="width:100%" />
-            <div class="button-row">
-                <button class="btn-sm" @click="submitDates()">提交</button>
-                <button class="btn-sm" @click="submitDates(true)">提交并关闭</button>
-                <button class="btn-sm" @click="changePeriod()">清除</button>
             </div>
         </div>
     </div>

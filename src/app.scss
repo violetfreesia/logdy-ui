@@ -171,6 +171,7 @@
     max-width: min(520px, 42vw);
     overflow: auto;
     overflow-x: hidden;
+    scrollbar-gutter: stable;
     padding: 12px 10px 16px;
 
     &.empty {

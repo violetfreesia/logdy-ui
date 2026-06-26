@@ -657,7 +657,6 @@ const updateSampleLine = () => {
             <DoubleRight v-if="leftColHidden" @click="toggleLeftCol" />
           </div>
           <template v-if="!leftColHidden">
-            <DateModal inline @change="updateDates" />
             <div class="counter">
               <span class="counter-total">{{ store.displayRows.length }} / {{ store.rows.length }} 条日志</span>
               <div class="counter-actions">
@@ -681,6 +680,7 @@ const updateSampleLine = () => {
                   :disabled="store.facetSort === 'count'">数量</button>
               </div>
             </div>
+            <DateModal inline @change="updateDates" />
             <Filter />
             <FacetComponent :facets="store.facets" :sort="store.facetSort" />
           </template>

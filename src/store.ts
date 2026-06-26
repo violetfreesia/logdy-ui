@@ -265,6 +265,7 @@ export const useMainStore = defineStore("main", () => {
     const resetAllFiltersAndFacets = () => {
         useFilterStore().resetToggles()
         clearAllFacets()
+        datepicker.value = { from: 0, to: 0 }
     }
 
     const resetCorrelationFilter = () => {
