@@ -474,14 +474,14 @@ const addMiddleware = () => {
                         @click="settings.entriesOrder = 'asc'">最新在下方</button>
                     </div>
                     <div class="block">
-                        选中的“correlation id”列
+                        关联ID列
                         <select v-model="settings.correlationIdField">
                             <option :value="''"></option>
                             <option v-for="col in layout.columns" :id="'container_' + col.name">{{col.name}}</option>
                         </select>
                     </div>
                     <div class="block">
-                        高亮相同“correlation id”的单元格
+                        高亮相同关联ID的单元格
                         <button class="btn-sm" :disabled="settings.paintCorrelationIdCell"
                             @click="settings.paintCorrelationIdCell = true">启用</button>
                         <button class="btn-sm" :disabled="!settings.paintCorrelationIdCell"
@@ -500,11 +500,11 @@ const addMiddleware = () => {
                         <button @click="editMiddleware(m.id)" class="btn-sm">编辑</button>
                         <button @click="removeMiddleware(m.id)" class="btn-sm btn-danger">删除</button>
                     </div>
-                    <div v-if="selectedMiddleware">
-                        <div>名称</div>
-                        <div>
+                    <div v-if="selectedMiddleware" style="margin-top: 10px">
+                        <span style="margin-right: 10px">名称</span>
+                        <span>
                             <input class="input" v-model="selectedMiddleware.name" type="text" />
-                        </div>
+                        </span>
                     </div>
                     <div style="margin:10px 0;" :style="{ 'display': !selectedMiddleware ? 'none' : 'block' }"
                         id="middleware-editor"></div>
@@ -578,7 +578,7 @@ const addMiddleware = () => {
             <div class="sample-line">
                 <hr />
                 <h2>示例行预览
-                    <button class="btn-sm" @click="sampleLineVisible = !sampleLineVisible">切换示例行</button>
+                    <button class="btn-sm" @click="sampleLineVisible = !sampleLineVisible">{{sampleLineVisible? '隐藏' : '显示'}}示例行</button>
                     <button class="btn-sm" v-if="sampleLineVisible" @click="$emit('update-sample-line')">更换示例行</button>
 
                 </h2>
