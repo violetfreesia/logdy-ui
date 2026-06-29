@@ -136,20 +136,24 @@ const copyToClipboard = (value: string | undefined) => {
 
 <style scoped lang="scss">
 .drawer {
-    height: 100%;
+    display: flex;
+    min-height: 100%;
     max-width: min(900px, 48vw);
     min-width: 360px;
     background: var(--surface);
     border-left: 1px solid var(--border);
     z-index: 90;
     padding: 0;
+    overflow: visible;
 
     .resize-handle {
+        position: sticky;
+        top: 0;
         background: var(--border);
         width: 4px;
+        flex: 0 0 4px;
         cursor: ew-resize;
         height: 100%;
-        float: left;
         margin-right: 0;
 
         &:hover {
@@ -174,11 +178,24 @@ const copyToClipboard = (value: string | undefined) => {
     }
 
     .inner-drawer {
+        flex: 1 1 auto;
+        min-width: 0;
         padding: 14px;
-        height: 100%;
-        overflow-y: auto;
+        min-height: 100%;
         padding-bottom: 72px;
 
+        .code-panel {
+            max-width: 100%;
+            overflow: auto;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+
+            code {
+                white-space: inherit;
+                overflow-wrap: inherit;
+                word-break: inherit;
+            }
+        }
 
         .header {
             display: flex;
